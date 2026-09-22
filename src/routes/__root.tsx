@@ -28,14 +28,11 @@ function AdminAuthModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === "admin" && password === "2030") {
-      // Trigger success state, close modal, and route to your admin dashboard
       onClose();
       setUsername("");
       setPassword("");
-      // router.navigate({ to: "/admin" }); // Uncomment once your admin route is built
       alert("System Overridden. Welcome to the dashboard.");
     } else {
-      // Keep it completely silent on failure to maintain the hidden illusion
       setUsername("");
       setPassword("");
       onClose();
@@ -43,30 +40,29 @@ function AdminAuthModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md transition-all duration-300">
-      <form onSubmit={handleLogin} className="w-full max-w-sm px-6">
-        <div className="space-y-6">
-          {/* Blank fields as requested: no borders, no labels, no placeholders */}
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-transparent text-center text-foreground outline-none focus:ring-0"
-            autoFocus
-            autoComplete="off"
-            spellCheck="false"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-transparent text-center text-foreground outline-none focus:ring-0"
-          />
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm transition-all duration-300">
+      <form 
+        onSubmit={handleLogin} 
+        className="relative w-full max-w-sm space-y-6 rounded-2xl border border-border/20 bg-surface px-8 py-12 shadow-2xl"
+      >
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full rounded-md border border-border/30 bg-background/50 py-3 text-center tracking-widest text-foreground outline-none transition-colors focus:border-ring"
+          autoFocus
+          autoComplete="off"
+          spellCheck="false"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full rounded-md border border-border/30 bg-background/50 py-3 text-center tracking-widest text-foreground outline-none transition-colors focus:border-ring"
+        />
         <button type="submit" className="hidden">Enter</button>
       </form>
       
-      {/* Click outside to close */}
       <div 
         className="absolute inset-0 -z-10 cursor-default" 
         onClick={onClose}
