@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
-import logoAsset from "@/assets/unmakethat-logo.png.asset.json";
+import logoImage from "@/assets/unmakethat-logo.png";
 
 const NAV = [
   { label: "BEATS", to: "/#beats" },
@@ -26,7 +26,7 @@ export function Header() {
       <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
           <Link to="/" className="flex items-center" aria-label="UNMAKETHAT home">
-            <img src={logoAsset.url} alt="UNMAKETHAT" width={1536} height={1024} className="h-12 w-auto" />
+            <img src={logoImage} alt="UNMAKETHAT" width={1536} height={1024} className="h-12 w-auto" />
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm font-medium tracking-wide text-muted-foreground md:flex">
