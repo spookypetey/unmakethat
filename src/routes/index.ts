@@ -7,7 +7,7 @@ import { ProductCard, BeatRow } from "@/components/store/ProductCard";
 import { productsQuery } from "@/lib/products.queries";
 import { categorize } from "@/lib/shopify";
 import studioImg from "@/assets/beat-voidwalker.jpg";
-import logoAsset from "@/assets/unmakethat-logo.png.asset.json";
+import logoImage from "@/assets/unmakethat-logo.png";
 
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),
@@ -54,7 +54,7 @@ function Index() {
           </span>
           <h1 className="mb-6 flex justify-center">
             <img
-              src={logoAsset.url}
+              src={logoImage}
               alt="UNMAKETHAT"
               width={1536}
               height={1024}
