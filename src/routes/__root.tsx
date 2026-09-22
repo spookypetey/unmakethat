@@ -32,6 +32,7 @@ function AdminAuthModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
       setUsername("");
       setPassword("");
       alert("System Overridden. Welcome to the dashboard.");
+      router.navigate({ to: "/admin" }); 
     } else {
       setUsername("");
       setPassword("");
