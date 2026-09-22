@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -16,6 +16,66 @@ import { Header } from "@/components/store/Header";
 import { Footer } from "@/components/store/Footer";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { useCartSync } from "@/hooks/useCartSync";
+
+// --- Hidden Admin Modal ---
+function AdminAuthModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  if (!isOpen) return null;
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === "admin" && password === "2030") {
+      // Trigger success state, close modal, and route to your admin dashboard
+      onClose();
+      setUsername("");
+      setPassword("");
+      // router.navigate({ to: "/admin" }); // Uncomment once your admin route is built
+      alert("System Overridden. Welcome to the dashboard.");
+    } else {
+      // Keep it completely silent on failure to maintain the hidden illusion
+      setUsername("");
+      setPassword("");
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md transition-all duration-300">
+      <form onSubmit={handleLogin} className="w-full max-w-sm px-6">
+        <div className="space-y-6">
+          {/* Blank fields as requested: no borders, no labels, no placeholders */}
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full bg-transparent text-center text-foreground outline-none focus:ring-0"
+            autoFocus
+            autoComplete="off"
+            spellCheck="false"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full bg-transparent text-center text-foreground outline-none focus:ring-0"
+          />
+        </div>
+        <button type="submit" className="hidden">Enter</button>
+      </form>
+      
+      {/* Click outside to close */}
+      <div 
+        className="absolute inset-0 -z-10 cursor-default" 
+        onClick={onClose}
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
+// --------------------------
 
 function NotFoundComponent() {
   return (
@@ -123,6 +183,21 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function StoreShell() {
   useCartSync();
+  const [adminOpen, setAdminOpen] = useState(false);
+
+  // Global Key Listener for the Ctrl+Alt+A trigger
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "a") {
+        e.preventDefault();
+        setAdminOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <>
       <Header />
@@ -131,6 +206,7 @@ function StoreShell() {
       <Footer />
       <CartDrawer />
       <Toaster theme="dark" position="top-center" />
+      <AdminAuthModal isOpen={adminOpen} onClose={() => setAdminOpen(false)} />
     </>
   );
 }
